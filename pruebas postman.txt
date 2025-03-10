@@ -1,0 +1,10 @@
+consulta movimientos
+localhost:8090/movimientos/fechas?fecha1=2025-02-01&fecha2=2025-03-10
+Clientes
+localhost:8090/clientes
+Cuentas
+localhost:8090/cuentas
+Movimientos
+localhost:8090/movimientos
+
+
