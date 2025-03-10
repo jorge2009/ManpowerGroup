@@ -1,1 +1,160 @@
 
+-- phpMyAdmin SQL Dump
+-- version 5.2.0
+-- https://www.phpmyadmin.net/
+--
+-- Servidor: 127.0.0.1:3306
+-- Tiempo de generación: 10-03-2025 a las 01:22:43
+-- Versión del servidor: 8.0.31
+-- Versión de PHP: 8.0.26
+
+SET SQL_MODE = "NO_AUTO_VALUE_ON_ZERO";
+START TRANSACTION;
+SET time_zone = "+00:00";
+
+
+/*!40101 SET @OLD_CHARACTER_SET_CLIENT=@@CHARACTER_SET_CLIENT */;
+/*!40101 SET @OLD_CHARACTER_SET_RESULTS=@@CHARACTER_SET_RESULTS */;
+/*!40101 SET @OLD_COLLATION_CONNECTION=@@COLLATION_CONNECTION */;
+/*!40101 SET NAMES utf8mb4 */;
+
+--
+-- Base de datos: `gestioncuentas`
+--
+
+-- --------------------------------------------------------
+
+--
+-- Estructura de tabla para la tabla `cliente`
+--
+
+DROP TABLE IF EXISTS `cliente`;
+CREATE TABLE IF NOT EXISTS `cliente` (
+  `cliente_id` bigint NOT NULL AUTO_INCREMENT,
+  `estado` bigint DEFAULT NULL,
+  `clave` varchar(255) DEFAULT NULL,
+  PRIMARY KEY (`cliente_id`)
+) ENGINE=InnoDB AUTO_INCREMENT=5 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+
+--
+-- Volcado de datos para la tabla `cliente`
+--
+
+INSERT INTO `cliente` (`cliente_id`, `estado`, `clave`) VALUES
+(1, 1, '1234'),
+(2, 1, '5678'),
+(3, 1, '1245');
+
+-- --------------------------------------------------------
+
+--
+-- Estructura de tabla para la tabla `cuenta`
+--
+
+DROP TABLE IF EXISTS `cuenta`;
+CREATE TABLE IF NOT EXISTS `cuenta` (
+  `saldo_inicial` double DEFAULT NULL,
+  `cliente_id` bigint DEFAULT NULL,
+  `cuenta_id` bigint NOT NULL AUTO_INCREMENT,
+  `numero_cuenta` bigint DEFAULT NULL,
+  `estado` varchar(255) DEFAULT NULL,
+  `tipo_cuenta` varchar(255) DEFAULT NULL,
+  PRIMARY KEY (`cuenta_id`),
+  KEY `FK4p224uogyy5hmxvn8fwa2jlug` (`cliente_id`)
+) ENGINE=InnoDB AUTO_INCREMENT=6 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+
+--
+-- Volcado de datos para la tabla `cuenta`
+--
+
+INSERT INTO `cuenta` (`saldo_inicial`, `cliente_id`, `cuenta_id`, `numero_cuenta`, `estado`, `tipo_cuenta`) VALUES
+(2000, 1, 1, 34655, 'true', 'Ahorros'),
+(100, 3, 2, 225487, 'true', 'Corriente'),
+(540, 2, 3, 496825, 'true', 'Ahorros'),
+(0, 1, 4, 495878, 'true', 'Ahorros'),
+(1000, 2, 5, 585545, 'true', 'Corriente');
+
+-- --------------------------------------------------------
+
+--
+-- Estructura de tabla para la tabla `movimientos`
+--
+
+DROP TABLE IF EXISTS `movimientos`;
+CREATE TABLE IF NOT EXISTS `movimientos` (
+  `saldo` double DEFAULT NULL,
+  `valor` double DEFAULT NULL,
+  `cuenta_id` bigint DEFAULT NULL,
+  `movimiento_id` bigint NOT NULL AUTO_INCREMENT,
+  `tipo_movimiento` varchar(255) DEFAULT NULL,
+  `fecha` timestamp NULL DEFAULT NULL,
+  PRIMARY KEY (`movimiento_id`),
+  KEY `FKof0364849tnpw8nw69v8m1vq4` (`cuenta_id`)
+) ENGINE=InnoDB AUTO_INCREMENT=33 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+
+--
+-- Volcado de datos para la tabla `movimientos`
+--
+
+INSERT INTO `movimientos` (`saldo`, `valor`, `cuenta_id`, `movimiento_id`, `tipo_movimiento`, `fecha`) VALUES
+(1190, 10, 2, 28, 'deposito', '2025-03-09 20:20:07'),
+(1200, 10, 4, 29, 'deposito', '2025-03-09 20:20:43'),
+(110, 10, 1, 30, 'deposito', '2025-03-09 20:21:44'),
+(140, 30, 3, 31, 'deposito', '2025-03-09 20:22:07'),
+(130, 10, 5, 32, 'retiro', '2025-03-09 20:22:31');
+
+-- --------------------------------------------------------
+
+--
+-- Estructura de tabla para la tabla `persona`
+--
+
+DROP TABLE IF EXISTS `persona`;
+CREATE TABLE IF NOT EXISTS `persona` (
+  `cliente_id` bigint DEFAULT NULL,
+  `persona_id` bigint NOT NULL AUTO_INCREMENT,
+  `direccion` varchar(255) DEFAULT NULL,
+  `edad` varchar(255) DEFAULT NULL,
+  `genero` varchar(255) DEFAULT NULL,
+  `identificacion` varchar(255) DEFAULT NULL,
+  `nombre` varchar(255) DEFAULT NULL,
+  `telefono` varchar(255) DEFAULT NULL,
+  PRIMARY KEY (`persona_id`),
+  UNIQUE KEY `UKsk2ttlpp6eid09hulymqx6cc5` (`cliente_id`)
+) ENGINE=InnoDB AUTO_INCREMENT=5 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+
+--
+-- Volcado de datos para la tabla `persona`
+--
+
+INSERT INTO `persona` (`cliente_id`, `persona_id`, `direccion`, `edad`, `genero`, `identificacion`, `nombre`, `telefono`) VALUES
+(1, 1, 'Otavalo y principal', '21', 'masculino', '1001236283', 'Jose Lema', '098254785'),
+(2, 3, 'Amazona y NNUU', '31', 'femenino', '1001236253', 'Marianela Montalvo', '097548965'),
+(3, 4, '13 junio y Equinoccial', '25', 'masculino', '1001366253', 'Juan Osorio', '098874587');
+
+--
+-- Restricciones para tablas volcadas
+--
+
+--
+-- Filtros para la tabla `cuenta`
+--
+ALTER TABLE `cuenta`
+  ADD CONSTRAINT `FK4p224uogyy5hmxvn8fwa2jlug` FOREIGN KEY (`cliente_id`) REFERENCES `cliente` (`cliente_id`);
+
+--
+-- Filtros para la tabla `movimientos`
+--
+ALTER TABLE `movimientos`
+  ADD CONSTRAINT `FKof0364849tnpw8nw69v8m1vq4` FOREIGN KEY (`cuenta_id`) REFERENCES `cuenta` (`cuenta_id`);
+
+--
+-- Filtros para la tabla `persona`
+--
+ALTER TABLE `persona`
+  ADD CONSTRAINT `FKp1fst50dgnufgpbd48rpbpgo1` FOREIGN KEY (`cliente_id`) REFERENCES `cliente` (`cliente_id`);
+COMMIT;
+
+/*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;
+/*!40101 SET CHARACTER_SET_RESULTS=@OLD_CHARACTER_SET_RESULTS */;
+/*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
